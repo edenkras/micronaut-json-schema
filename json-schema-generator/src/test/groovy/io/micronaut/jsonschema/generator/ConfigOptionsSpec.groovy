@@ -51,6 +51,7 @@ class ConfigOptionsSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public class Porcupine {
           private String name;
 

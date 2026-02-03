@@ -72,6 +72,7 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public record Llama(
             @NotNull @Min(0) int age,
             @NotNull @Size(min = 1) String name,
@@ -113,6 +114,7 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public record Llama(
             @Min(0) int age,
             Llama name,
@@ -161,20 +163,24 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public record Default(
             @Min(0) int age,
             Defaults defaults
         ) {
           @Serdeable
+          @JsonSchema
           public record Defaults(
               Run run
           ) {
             @Serdeable
+            @JsonSchema
             public record Run(
                 Shell shell,
                 @JsonProperty("working-directory") @Pattern(regexp = "^[a-zA-Z]*") String workingDirectory
             ) {
               @Serdeable
+              @JsonSchema
               public enum Shell {
 
                 BASH("bash"),
@@ -250,6 +256,7 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public class Llama2 {
           /**
            * The age
@@ -349,6 +356,7 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public record Hedgehog(
             Map<String, Spike> spikes,
             Map<String, String> aliases,
@@ -399,6 +407,7 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public record Llama3(
             @NotNull @Size(min = 1) String name,
             @NotNull String foo,

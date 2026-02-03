@@ -305,7 +305,8 @@ public final class SourceGenerator {
     public EnumDef buildEnum(Schema jsonSchema, String builderClassName) {
         EnumDef.EnumDefBuilder enumBuilder = EnumDef.builder(builderClassName)
             .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN));
+            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN))
+            .addAnnotation(ClassTypeDef.of(JSON_SCHEMA_ANN));
         boolean isComplexEnum = false;
         LinkedHashMap<ExpressionDef.Constant, ExpressionDef> cases = new LinkedHashMap<>();
         LinkedHashMap<String, Object> enumValues = new LinkedHashMap<>();
@@ -380,7 +381,8 @@ public final class SourceGenerator {
     private RecordDef buildRecord(Schema jsonSchema, String builderClassName) {
         RecordDef.RecordDefBuilder objectBuilder = RecordDef.builder(builderClassName)
             .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN));
+            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN))
+            .addAnnotation(ClassTypeDef.of(JSON_SCHEMA_ANN));
 
         addFields(jsonSchema, objectBuilder);
         return objectBuilder.build();
@@ -389,7 +391,8 @@ public final class SourceGenerator {
     private ClassDef buildClass(Schema jsonSchema, String builderClassName) {
         ClassDef.ClassDefBuilder objectBuilder = ClassDef.builder(builderClassName)
             .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN));
+            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN))
+            .addAnnotation(ClassTypeDef.of(JSON_SCHEMA_ANN));
 
         if (context.hasDefinition(inputFileName + "/superClass")) {
             var superClass = context.getDefinitionType(inputFileName + "/superClass");
@@ -423,7 +426,8 @@ public final class SourceGenerator {
     private InterfaceDef buildInterface(Schema jsonSchema, String builderClassName) {
         InterfaceDef.InterfaceDefBuilder objectBuilder = InterfaceDef.builder(builderClassName)
             .addModifiers(Modifier.PUBLIC)
-            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN));
+            .addAnnotation(ClassTypeDef.of(SERDEABLE_ANN))
+            .addAnnotation(ClassTypeDef.of(JSON_SCHEMA_ANN));
         if (jsonSchema.hasDiscriminator()) {
             // top level interface
             addDiscriminatorAnnotations(jsonSchema, objectBuilder);

@@ -23,6 +23,7 @@ class EnumGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
         public enum Status {
 
           ACTIVE("active"),
