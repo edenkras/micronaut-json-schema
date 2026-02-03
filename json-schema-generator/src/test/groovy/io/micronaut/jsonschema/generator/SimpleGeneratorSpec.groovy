@@ -72,6 +72,8 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public record Llama(
             @NotNull @Min(0) int age,
             @NotNull @Size(min = 1) String name,
@@ -113,6 +115,8 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public record Llama(
             @Min(0) int age,
             Llama name,
@@ -161,20 +165,28 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public record Default(
             @Min(0) int age,
             Defaults defaults
         ) {
           @Serdeable
+          @JsonSchema
+          @Generated
           public record Defaults(
               Run run
           ) {
             @Serdeable
+            @JsonSchema
+            @Generated
             public record Run(
                 Shell shell,
                 @JsonProperty("working-directory") @Pattern(regexp = "^[a-zA-Z]*") String workingDirectory
             ) {
               @Serdeable
+              @JsonSchema
+              @Generated
               public enum Shell {
 
                 BASH("bash"),
@@ -250,6 +262,8 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public class Llama2 {
           /**
            * The age
@@ -349,6 +363,8 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public record Hedgehog(
             Map<String, Spike> spikes,
             Map<String, String> aliases,
@@ -399,6 +415,8 @@ class SimpleGeneratorSpec extends AbstractGeneratorSpec {
         then:
         content == """
         @Serdeable
+        @JsonSchema
+        @Generated
         public record Llama3(
             @NotNull @Size(min = 1) String name,
             @NotNull String foo,

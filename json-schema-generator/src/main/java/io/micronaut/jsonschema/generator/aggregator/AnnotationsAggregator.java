@@ -39,6 +39,8 @@ import static io.micronaut.jsonschema.generator.SourceGenerator.getInputFileName
  */
 @Internal
 public class AnnotationsAggregator {
+    public static final String JSON_SCHEMA_ANN = "io.micronaut.jsonschema.JsonSchema";
+    public static final String GENERATED_ANN = "io.micronaut.core.annotation.Generated";
     public static final String SERDEABLE_ANN = "io.micronaut.serde.annotation.Serdeable";
     private static final String JACKSON_VALIDATION_PREFIX = "com.fasterxml.jackson.annotation.";
     public static final String JSON_ANY_GETTER_ANN = JACKSON_VALIDATION_PREFIX + "JsonAnyGetter";
