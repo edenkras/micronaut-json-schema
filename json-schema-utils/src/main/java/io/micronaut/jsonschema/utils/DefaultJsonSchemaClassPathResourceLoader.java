@@ -38,7 +38,7 @@ import java.util.Optional;
  */
 @Singleton
 @Internal
-class DefaultJsonSchemaClassPathResourceLoader implements JsonSchemaClassPathResourceLoader {
+public class DefaultJsonSchemaClassPathResourceLoader implements JsonSchemaClassPathResourceLoader {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultJsonSchemaClassPathResourceLoader.class);
     private static final String SUFFIX = ".schema.json";
     private static final String MEMBER_URI = "uri";
@@ -57,7 +57,7 @@ class DefaultJsonSchemaClassPathResourceLoader implements JsonSchemaClassPathRes
     @Nullable
     public <T> Optional<String> jsonSchemaStringForClass(@NonNull Class<T> type) {
 
-        Optional<String> pathOptional = jsonSchemaPath(type);
+        Optional<String> pathOptional = jsonSchemaPath(type, jsonSchemaConfiguration.getOutputLocation());
         if (pathOptional.isEmpty()) {
             if (LOG.isTraceEnabled()) {
                 LOG.trace("No schema path found for type: {}", type);
@@ -82,7 +82,7 @@ class DefaultJsonSchemaClassPathResourceLoader implements JsonSchemaClassPathRes
         }
     }
 
-    private <T> Optional<String> jsonSchemaPath(@NonNull Class<T> type) {
+    public static <T> Optional<String> jsonSchemaPath(@NonNull Class<T> type, @NonNull String outputLocation) {
         String className = NameUtils.hyphenate(type.getSimpleName());
         try {
             BeanIntrospection<T> introspection = BeanIntrospection.getIntrospection(type);
@@ -101,6 +101,6 @@ class DefaultJsonSchemaClassPathResourceLoader implements JsonSchemaClassPathRes
             LOG.debug("Introspection exception for class {}.}", type, e);
         }
         String name = className + SUFFIX;
-        return Optional.of(CLASSPATH_PREFIX + String.join(SLASH, META_INF, jsonSchemaConfiguration.getOutputLocation(), name));
+        return Optional.of(CLASSPATH_PREFIX + String.join(SLASH, META_INF, outputLocation, name));
     }
 }

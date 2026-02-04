@@ -23,6 +23,7 @@ import io.micronaut.jsonschema.generator.loaders.FileLoader;
 import io.micronaut.jsonschema.generator.utils.GeneratorContext;
 import io.micronaut.jsonschema.generator.utils.SourceGeneratorConfig;
 import io.micronaut.jsonschema.generator.utils.SourceGeneratorConfig.RecordAdoptionStrategy;
+import io.micronaut.jsonschema.utils.DefaultJsonSchemaClassPathResourceLoader;
 import io.micronaut.jsonschema.model.Schema;
 import io.micronaut.sourcegen.generator.SourceGenerators;
 import io.micronaut.sourcegen.model.*;
@@ -47,6 +48,7 @@ import java.util.stream.Stream;
 import static io.micronaut.core.util.StringUtils.capitalize;
 import static io.micronaut.jsonschema.generator.aggregator.AnnotationsAggregator.*;
 import static io.micronaut.jsonschema.generator.loaders.FileProcessor.*;
+import static io.micronaut.jsonschema.generator.loaders.SchemaLoader.JSON_MAPPER;
 import static io.micronaut.jsonschema.generator.aggregator.TypeAggregator.*;
 import static io.micronaut.jsonschema.model.Schema.DEF_SCHEMA_REF_PREFIX;
 
@@ -376,6 +378,11 @@ public final class SourceGenerator {
         }
         addFields(jsonSchema, enumBuilder);
         return enumBuilder.build();
+    }
+
+    private void addSchemaToClassPathResources(Schema schema) {
+        String schemaString = JSON_MAPPER.writeValueAsString(schema);
+//        String outputPath = DefaultJsonSchemaClassPathResourceLoader.jsonSchemaPath()
     }
 
     private RecordDef buildRecord(Schema jsonSchema, String builderClassName) {

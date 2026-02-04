@@ -2,6 +2,10 @@ package io.micronaut.jsonschema.test;
 
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.json.JsonMapper;
+import io.micronaut.jsonschema.generator.user.User;
+import io.micronaut.jsonschema.utils.DefaultJsonSchemaClassPathResourceLoader;
+import io.micronaut.jsonschema.utils.JsonSchemaClassPathResourceLoader;
+import io.micronaut.jsonschema.utils.JsonSchemaConfiguration;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -21,6 +25,9 @@ class SchemaGenerationTest {
     @Inject
     ResourceLoader resourceLoader;
 
+    @Inject
+    JsonSchemaClassPathResourceLoader jsonSchemaResourceLoader;
+
     @ParameterizedTest
     @ValueSource(strings = {"llama", "bird", "possum", "possum-environment", "red-winged-blackbird", "salamander" })
     void buildJsonSchema(String name) {
@@ -36,5 +43,21 @@ class SchemaGenerationTest {
         assertTrue(resultOptional.isPresent());
         String result = new String(resultOptional.get().readAllBytes(), StandardCharsets.UTF_8);
         assertEquals(jsonMapper.readValue(expected, Map.class), jsonMapper.readValue(result, Map.class));
+    }
+
+    @Test
+    void resourcesGenerator() throws IOException {
+//        assertEquals("ada", jsonSchemaResourceLoader.jsonSchemaStringForClass(User.class).get());
+        Optional<String> schemaPathOptional = DefaultJsonSchemaClassPathResourceLoader
+            .jsonSchemaPath(
+                User.class,
+                JsonSchemaConfiguration.DEFAULT_OUTPUT_LOCATION
+            );
+        assertTrue(schemaPathOptional.isPresent());
+        String schemaPath = schemaPathOptional.get();
+        Optional<InputStream> resultOptional = resourceLoader.getResourceAsStream(schemaPath);
+        assertTrue(resultOptional.isPresent());
+        String result = new String(resultOptional.get().readAllBytes(), StandardCharsets.UTF_8);
+        assertEquals("ada", result);
     }
 }

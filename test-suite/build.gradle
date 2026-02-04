@@ -1,12 +1,16 @@
+import io.micronaut.build.internal.generator.BeanGeneratorTask
+
 plugins {
     id("java-library")
     id("groovy")
+    id("io.micronaut.build.internal.test-suite-generator-java")
 }
 
 dependencies {
     testImplementation(mnValidation.validation)
     testImplementation(projects.micronautJsonSchemaAnnotations)
     testImplementation(mnSerde.micronaut.serde.jackson)
+    testImplementation(projects.micronautJsonSchemaUtils)
 
     testAnnotationProcessor(projects.micronautJsonSchemaProcessor)
     testAnnotationProcessor(mnSerde.micronaut.serde.processor)
@@ -30,9 +34,27 @@ dependencies {
     testRuntimeOnly(mnTest.junit.platform.launcher)
 }
 
+def userGenerator = tasks.register("generateUser", BeanGeneratorTask) {
+    language = "java"
+    classpath.from(configurations.beanGenerator)
+    jsonFile.convention(layout.projectDirectory.file("src/test/resources/user.schema.json"))
+    outputDirectory.convention(layout.buildDirectory.dir("generated/jsonSchema"))
+    packageName.convention("io.micronaut.jsonschema.generator.user")
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs.add("-Amicronaut.jsonschema.baseUri=https://example.com/schemas")
 }
+
+tasks.named("generateUser") {
+}
+
 test {
     useJUnitPlatform()
+}
+
+sourceSets {
+    test {
+        java.srcDir(userGenerator.map(BeanGeneratorTask::getGeneratedSourcesDirectory))
+    }
 }

@@ -10,6 +10,7 @@ dependencies {
     implementation(mnSourcegen.micronaut.sourcegen.generator.java)
     implementation(mnSourcegen.micronaut.sourcegen.annotations)
     implementation(mnSerde.micronaut.serde.jackson)
+    implementation(projects.micronautJsonSchemaUtils)
 
     api(projects.micronautJsonSchemaAnnotations)
     api(projects.micronautJsonSchemaCommon)
